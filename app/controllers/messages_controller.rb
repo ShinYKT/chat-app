@@ -2,6 +2,7 @@
   def index
     @message = Message.new
     @room = Room.find(params[:room_id])
+    @messages = @room.messages.includes(:user)
   end
 
   def create 
@@ -11,7 +12,8 @@
     if @message.save
       redirect_to room_messages_path
     else
-      render :new
+      @messages = @room.messages.includes(:user)
+      render :index
     end
   end
 
